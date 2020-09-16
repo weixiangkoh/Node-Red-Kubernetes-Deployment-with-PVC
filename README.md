@@ -5,7 +5,7 @@
 ## TL;DR;
 
 ```bash
-$ git clone https://scm.dimensiondata.com/Wei-Xiang.Koh/node-red-kubernetes-setup.git
+$ git clone https://github.com/weixiangkoh/Node-Red-Kubernetes-Deployment-with-PVC.git
 $ kubectl apply -f node-red-setup.yml
 ```
 
@@ -19,7 +19,7 @@ $ kubectl apply -f node-red-setup.yml
 To install the deployment, services and PVC in namespace `node-red`:
 
 ```bash
-$ git clone https://scm.dimensiondata.com/Wei-Xiang.Koh/node-red-kubernetes-setup.git
+$ git clone https://github.com/weixiangkoh/Node-Red-Kubernetes-Deployment-with-PVC.git
 $ kubectl create namespace node-red
 $ kubectl apply -f node-red-setup.yml
 ```
