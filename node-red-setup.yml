@@ -1,0 +1,69 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: node-red-vol
+  labels:
+    app: node-red
+  namespace: node-red
+  annotations:
+    volume.beta.kubernetes.io/storage-class: fast
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-red
+  labels:
+    app: node-red
+  namespace: node-red
+spec:
+  ports:
+  - port: 80
+    targetPort: 1880
+  selector:
+    app: node-red
+  type: LoadBalancer
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-red-deployment
+  labels:
+    app: node-red
+  namespace: node-red
+spec:
+  replicas: 1
+  template:
+    metadata:
+       labels:
+        app: node-red
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+        fsGroup: 1000
+      containers:
+      - name: node-red
+        image: nodered/node-red
+        ports:
+        - containerPort: 1880
+          name: node-red
+        volumeMounts:
+        - name: node-red-data
+          mountPath: /data
+      volumes:
+      - name: node-red-data
+        persistentVolumeClaim:
+          claimName: node-red-vol
+  selector:
+    matchLabels:
+      app: node-red
